@@ -37,7 +37,9 @@ flowchart TD
     api --> repo
 ```
 
-From there, Astro generates two kinds of pages: a list page that shows all my posts sorted by date, and one page for each individual post. The finished site is served behind nginx on my own server, where it goes live at [sovathapann.site/blog](https://sovathapann.site/blog). The part I like most is the clean separation which I just write plain Markdown in one repo, and my website takes care of turning it into proper, styled blog pages.
+From there, Astro generates two kinds of pages: a list page that shows all my posts sorted by date, and one page for each individual post. One thing that tripped me up at first is *when* this happens. The loader does not run every time someone visits the site. It runs once, at build time. Astro pulls in my Markdown, turns each post into a plain HTML file, and that finished set of files is what gets served. nginx on my server simply hands those static files to visitors. It never talks to GitHub, so a page reload does not fetch anything new.
+
+That detail matters, because it means a new post does not appear on its own. If I push to the `lab` repo and nothing rebuilds the site, visitors keep seeing the old build. So I added a small piece of automation to close that gap: whenever I push a change under `blog-posts/`, a GitHub Actions workflow in the `lab` repo sends a signal to my website repo, which kicks off a fresh build and redeploy. The build re-runs the loader, pulls my latest Markdown, and ships the new static files to the server. The result is what I wanted all along: I write Markdown, push it, and a minute later the post is live at [sovathapann.site/blog](https://sovathapann.site/blog). The part I like most is the clean separation. I just write plain Markdown in one repo, and the rest happens on its own.
 
 And here is the result of my blog page live at sovathapann.site/blog:
 
