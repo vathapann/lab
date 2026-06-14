@@ -1,0 +1,22 @@
+name: Trigger website rebuild
+
+# When blog content changes on the blog-post branch, tell the portfolio repo to
+# rebuild and redeploy sovathapann.site so the new/updated posts go live.
+on:
+  push:
+    branches: [ "blog-post" ]
+    paths:
+      - "blog-posts/**"
+  workflow_dispatch:   # allows a manual trigger from the Actions tab
+
+jobs:
+  notify-portfolio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send rebuild signal to portfolio repo
+        run: |
+          curl -fsS -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.PORTFOLIO_DISPATCH_TOKEN }}" \
+            https://api.github.com/repos/vathapann/sovathapann-portfolio/dispatches \
+            -d '{"event_type":"blog-content-updated"}'
