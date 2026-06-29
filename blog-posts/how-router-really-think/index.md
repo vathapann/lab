@@ -1,3 +1,10 @@
+---
+title: "A Reflection on My LANs & Routing Course at UTS"
+date: "2026-06-30"
+tags: ["blog-post", "uts", "networking", "cisco"]
+excerpt: "How a core networking course at UTS finally made VLANs, OSPF, and NAT click, and the Cisco lab mistakes that taught me the most."
+---
+
 # A Reflection on My LANs & Routing Course at UTS
 
 *The moment I finally understood how routers think*
